@@ -5,7 +5,6 @@ const express = require("express");
 const app = express();
 const port = 4000;
 const fetch = require('node-fetch')
-
 app.use(cookie()); app.use(express.urlencoded({
     extended: false
 }));
@@ -13,16 +12,18 @@ app.use(cookie()); app.use(express.urlencoded({
 const { MongoClient, ServerApiVersion } = require('mongodb');
 const uri = "mongodb+srv://Abs:Admin@cluster0.5swzs.mongodb.net/?retryWrites=true&w=majority";
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
-client.connect(err => {
-    const collection = client.db("test").collection("devices");
-    // perform actions on the collection object
-    client.close();
-});
-// API
-fetch("https://fakestoreapi.com/products/1")
-    .then((res) => res.json())
-    .then((json) => console.log(json));
-//
+
+const start = async() =>{
+    try{
+        await client.connect()
+        console.log('connected')
+    }
+    catch (e) {
+        console.log(e)
+    }
+}
+start()
+
 app.set('view engine', 'ejs');
 app.get('/', (req, res) =>
 { res.render("login.ejs");
